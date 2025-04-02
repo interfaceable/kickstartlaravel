@@ -1,16 +1,14 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Filament\Resources\TagResource\Pages;
 
-namespace App\Filament\Resources\KitResource\Pages;
-
-use App\Filament\Resources\KitResource;
-use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\TagResource;
 use Filament\Actions;
+use Filament\Resources\Pages\ViewRecord;
 
-class ViewKit extends ViewRecord
+class ViewTag extends ViewRecord
 {
-    protected static string $resource = KitResource::class;
+    protected static string $resource = TagResource::class;
 
     protected function getHeaderActions(): array
     {
