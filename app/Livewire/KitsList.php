@@ -7,18 +7,18 @@ namespace App\Livewire;
 use App\Models\Kit;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Table;
-use Livewire\Component;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters;
+use Filament\Tables\Table;
+use Livewire\Component;
 
-class KitsList extends Component implements HasTable, HasForms
+class KitsList extends Component implements HasForms, HasTable
 {
-    use InteractsWithTable,
-        InteractsWithForms;
+    use InteractsWithForms,
+        InteractsWithTable;
 
     public function table(Table $table): Table
     {
@@ -69,7 +69,11 @@ class KitsList extends Component implements HasTable, HasForms
                             'window.navigator.clipboard.writeText("laravel new myapp --using='.$kit->namespace.'");
                             $tooltip("'.__('Copied to clipboard').'", { timeout: 1500 });'
                         );
-                    })
+                    }),
+                Tables\Actions\Action::make('install-with-herd')
+                    ->hiddenLabel()
+                    ->icon(fn () => view('components.install-with-herd'))
+                    ->url(fn (Kit $kit): string => sprintf('https://herd.laravel.com/new?starter-kit=%s', $kit->namespace)),
             ]);
     }
 }
