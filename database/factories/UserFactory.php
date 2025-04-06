@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
@@ -32,6 +33,26 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    /**
+     * Give the user the specified roles.
+     */
+    public function withRoles(mixed $roles): static
+    {
+        return $this->afterCreating(function (User $user) use ($roles) {
+            $user->assignRole($roles);
+        });
+    }
+
+    /**
+     * Give the user the specified permissions.
+     */
+    public function withPermissions(mixed $permissions): static
+    {
+        return $this->afterCreating(function (User $user) use ($permissions) {
+            $user->givePermissionTo($permissions);
+        });
     }
 
     /**
