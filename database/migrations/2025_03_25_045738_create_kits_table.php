@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('namespace')->unique();
             $table->text('description')->nullable();
             $table->string('repo_url');
+            $table->boolean('is_official')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

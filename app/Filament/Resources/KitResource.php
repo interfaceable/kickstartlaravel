@@ -58,6 +58,9 @@ class KitResource extends Resource
                     ->required()
                     ->url(),
 
+                Forms\Components\Checkbox::make('is_official')
+                    ->label(__('Official')),
+
                 Forms\Components\MarkdownEditor::make('description')
                     ->columnSpanFull()
                     ->nullable(),

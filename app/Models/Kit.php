@@ -25,12 +25,22 @@ class Kit extends Model
     }
 
     /**
-     * Get all of the tags for the Kit.
+     * Get all the tags for the Kit.
      *
      * @return MorphToMany<Tag, $this>
      */
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_official' => 'boolean',
+        ];
     }
 }

@@ -17,7 +17,7 @@ class Tag extends Model
         SoftDeletes;
 
     /**
-     * Get all of the kits that are assigned this tag.
+     * Get all the kits that are assigned this tag.
      *
      * @return MorphToMany<Kit, $this>
      */
