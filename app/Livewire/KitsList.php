@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\Kit;
+use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -62,13 +64,30 @@ class KitsList extends Component implements HasForms, HasTable
                     ->url(url: fn (Kit $kit): string => $kit->repo_url, shouldOpenInNewTab: true),
 
                 Tables\Actions\Action::make('install')
-                    ->label(__('Install'))
-                    ->icon('heroicon-m-arrow-down-tray')
-                    ->action(function ($livewire, Kit $kit) {
-                        $livewire->js(
-                            'window.navigator.clipboard.writeText("laravel new myapp --using='.$kit->namespace.'");
-                            $tooltip("'.__('Copied to clipboard').'", { timeout: 1500 });'
-                        );
+                    ->label(__('Install with CLI'))
+                    ->icon('heroicon-o-command-line')
+                    ->requiresConfirmation()
+                    ->modalIcon('heroicon-o-command-line')
+                    ->modalHeading(__('Generate install command'))
+                    ->modalDescription(__('Enter the name of your new project and click "Copy" to copy the command to your clipboard.'))
+                    ->form([
+                        Forms\Components\TextInput::make('name')
+                            ->label(__('Project name'))
+                            ->placeholder('myapp')
+                            ->required()
+                            ->string()
+                            ->maxLength(255)
+                            ->default('myapp'),
+                    ])
+                    ->modalWidth('md')
+                    ->modalSubmitActionLabel(__('Copy'))
+                    ->action(function ($livewire, Kit $kit, array $data) {
+                        $livewire->js('window.navigator.clipboard.writeText("laravel new '.$data['name'].' --using='.$kit->namespace.'");');
+
+                        Notification::make()
+                            ->title(__('Command copied to clipboard'))
+                            ->success()
+                            ->send();
                     }),
                 Tables\Actions\Action::make('install-with-herd')
                     ->hiddenLabel()
