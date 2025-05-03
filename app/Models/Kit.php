@@ -17,14 +17,6 @@ class Kit extends Model
         SoftDeletes;
 
     /**
-     * {@inheritDoc}
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
-    /**
      * Get all the tags for the Kit.
      *
      * @return MorphToMany<Tag, $this>
