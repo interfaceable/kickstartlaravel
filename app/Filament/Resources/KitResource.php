@@ -64,6 +64,15 @@ class KitResource extends Resource
                 Forms\Components\MarkdownEditor::make('description')
                     ->columnSpanFull()
                     ->nullable(),
+
+                Forms\Components\Select::make('tags')
+                    ->label(__('Tags'))
+                    ->placeholder(__('Tech stack, author etc...'))
+                    ->relationship(name: 'tags', titleAttribute: 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload()
+                    ->columnSpanFull()
             ]);
     }
 
